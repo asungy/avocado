@@ -12,10 +12,17 @@ set ( PROJECT_VERSION_PATCH 0 )
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED True )
 
+# Set configuration variable directory
 set( AVO_VARS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vars/" )
-
 configure_file( ${AVO_VARS_DIR}/ProjectVars.hpp.in ProjectVars.hpp )
 
-add_executable( Avocado main.cpp )
+# Set source directory
+# TODO: Refactor: GLOB-ing source files is not recommended because this makes CMAKE
+#       unaware of file changes and the generators won't function properly
+set( AVO_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/source/" )
+file( GLOB AVO_SOURCE_FILES "${AVO_SOURCE_DIR}/*.cpp" )
+
+# Add executable
+add_executable( Avocado ${AVO_SOURCE_FILES} )
 
 target_include_directories( Avocado PUBLIC "${PROJECT_BINARY_DIR}" )
