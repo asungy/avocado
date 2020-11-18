@@ -12,7 +12,9 @@ set ( PROJECT_VERSION_PATCH 0 )
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED True )
 
-configure_file( VersionConfig.hpp.in VersionConfig.hpp )
+set( AVO_VARS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vars/" )
+
+configure_file( ${AVO_VARS_DIR}/ProjectVars.hpp.in ProjectVars.hpp )
 
 add_executable( Avocado main.cpp )
 

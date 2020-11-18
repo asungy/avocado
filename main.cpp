@@ -1,6 +1,6 @@
 #pragma once
 
-#include "VersionConfig.hpp"
+#include "ProjectVars.hpp"
 
 #include <iostream>
 
