@@ -32,7 +32,7 @@ include_directories( ${PYTHON_INCLUDE_PATH} )
 add_executable( Avocado ${AVO_SOURCE_FILES} ${AVO_HEADER_FILES} )
 
 # Specify libraries during linking
-target_link_libraries( Avocado python3.8 )
+target_link_libraries( Avocado PRIVATE python3.8 )
 
 # Add include directory
-target_include_directories( Avocado PUBLIC "${PROJECT_BINARY_DIR}" )
+target_include_directories( Avocado PRIVATE "${PROJECT_BINARY_DIR}" )
