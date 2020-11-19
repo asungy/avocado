@@ -22,7 +22,16 @@ configure_file( ${AVO_VARS_DIR}/ProjectVars.hpp.in ProjectVars.hpp )
 set( AVO_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/source/" )
 file( GLOB AVO_SOURCE_FILES "${AVO_SOURCE_DIR}/*.cpp" )
 
+# Add Python 3
+find_package( Python 3.8 REQUIRED COMPONENTS Interpreter Development )
+find_path( PYTHON_INCLUDE_PATH Python.h /usr/include/python3.8 )
+include_directories( ${PYTHON_INCLUDE_PATH} )
+
 # Add executable
 add_executable( Avocado ${AVO_SOURCE_FILES} )
 
+# Specify libraries during linking
+target_link_libraries( Avocado python3.8 )
+
+# Add include directory
 target_include_directories( Avocado PUBLIC "${PROJECT_BINARY_DIR}" )
