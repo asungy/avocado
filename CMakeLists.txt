@@ -24,8 +24,9 @@ set( AVO_SOURCE_FILES
     )
 
 # Set configuration variable directory
-set( AVO_VARS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vars/" )
-configure_file( ${AVO_VARS_DIR}/ProjectVars.hpp.in ProjectVars.hpp )
+set( AVO_VARS_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/vars/" )
+set( AVO_BIN_VARS_DIR "${PROJECT_BINARY_DIR}/include/" )
+configure_file( ${AVO_VARS_DIR}/ProjectVars.hpp.in ${AVO_BIN_VARS_DIR}/ProjectVars.hpp )
 
 # Add Python 3
 find_package( Python 3.8 REQUIRED COMPONENTS Interpreter Development )
@@ -39,4 +40,6 @@ add_executable( Avocado ${AVO_SOURCE_FILES} ${AVO_HEADER_FILES} )
 target_link_libraries( Avocado PRIVATE python3.8 )
 
 # Add include directory
-target_include_directories( Avocado PRIVATE "${PROJECT_BINARY_DIR}" )
+target_include_directories( Avocado PRIVATE 
+    ${AVO_BIN_VARS_DIR}
+    )
