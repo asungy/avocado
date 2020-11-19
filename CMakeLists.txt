@@ -21,6 +21,7 @@ configure_file( ${AVO_VARS_DIR}/ProjectVars.hpp.in ProjectVars.hpp )
 #       unaware of file changes and the generators won't function properly
 set( AVO_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/source/" )
 file( GLOB AVO_SOURCE_FILES "${AVO_SOURCE_DIR}/*.cpp" )
+file( GLOB AVO_HEADER_FILES "${AVO_SOURCE_DIR}/*hpp" )
 
 # Add Python 3
 find_package( Python 3.8 REQUIRED COMPONENTS Interpreter Development )
@@ -28,7 +29,7 @@ find_path( PYTHON_INCLUDE_PATH Python.h /usr/include/python3.8 )
 include_directories( ${PYTHON_INCLUDE_PATH} )
 
 # Add executable
-add_executable( Avocado ${AVO_SOURCE_FILES} )
+add_executable( Avocado ${AVO_SOURCE_FILES} ${AVO_HEADER_FILES} )
 
 # Specify libraries during linking
 target_link_libraries( Avocado python3.8 )
