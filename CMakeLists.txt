@@ -12,16 +12,20 @@ set ( PROJECT_VERSION_PATCH 0 )
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED True )
 
+# Set header files
+set( AVO_HEADER_FILES 
+    source/interface.hpp
+    )
+
+# Set source files
+set( AVO_SOURCE_FILES
+    source/main.cpp
+    source/interface.cpp
+    )
+
 # Set configuration variable directory
 set( AVO_VARS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vars/" )
 configure_file( ${AVO_VARS_DIR}/ProjectVars.hpp.in ProjectVars.hpp )
-
-# Set source directory
-# TODO: Refactor: GLOB-ing source files is not recommended because this makes CMAKE
-#       unaware of file changes and the generators won't function properly
-set( AVO_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/source/" )
-file( GLOB AVO_SOURCE_FILES "${AVO_SOURCE_DIR}/*.cpp" )
-file( GLOB AVO_HEADER_FILES "${AVO_SOURCE_DIR}/*hpp" )
 
 # Add Python 3
 find_package( Python 3.8 REQUIRED COMPONENTS Interpreter Development )
