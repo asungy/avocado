@@ -14,13 +14,13 @@ set( CMAKE_CXX_STANDARD_REQUIRED True )
 
 # Set header files
 set( AVO_HEADER_FILES 
-    source/interface.hpp
+    source/python.hpp
     )
 
 # Set source files
 set( AVO_SOURCE_FILES
     source/main.cpp
-    source/interface.cpp
+    source/python.cpp
     )
 
 # Set configuration variable directory
