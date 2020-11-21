@@ -7,7 +7,6 @@ include_directories( ${PYTHON_INCLUDE_PATH} )
 add_library(
     py-interface
     python.cpp
-    python.cpp
     )
 
 target_link_libraries( py-interface PRIVATE python3.8 )
