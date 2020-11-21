@@ -10,7 +10,7 @@ namespace py_interface {
     void Run()
     {
         Initialize();
-        Execute("market_data.maths", "multiply");
+        Execute("market_data", "multiply");
         Finalize();
     }
 
