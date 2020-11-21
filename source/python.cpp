@@ -5,7 +5,14 @@
 
 #include "python.hpp"
 
+
 namespace py_interface {
+    void run()
+    {
+        init();
+        execute("market_data", "test");
+    }
+
     void init()
     {
         Py_Initialize();
@@ -16,10 +23,11 @@ namespace py_interface {
         PyList_Append(py_path, PyUnicode_FromString("."));
     }
 
-    void run() 
+    auto execute(std::string module_name, std::string func_name) -> bool
     {
-        PyObject * module_name = PyUnicode_FromString("avotest");
-        PyObject * py_module = PyImport_Import(module_name);
+        PyObject * pystr = PyUnicode_FromString(module_name.c_str());
+        PyObject * py_module = PyImport_Import(pystr);
+        Py_DECREF(pystr);
 
         if (py_module != nullptr)
         {
@@ -29,5 +37,7 @@ namespace py_interface {
         {
             std::cout << "Module not found" << std::endl;
         }
+
+        return true;
     }
 }
