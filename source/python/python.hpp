@@ -1,8 +1,10 @@
 #include <string>
 
 namespace py_interface {
-    void run();
+    void Run();
 
-    void init();
-    auto execute(std::string module_name, std::string func_name) -> bool;
+    void Initialize();
+    void Finalize();
+
+    auto Execute(std::string module_name, std::string func_name) -> bool;
 }

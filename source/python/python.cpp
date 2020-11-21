@@ -7,23 +7,30 @@
 
 
 namespace py_interface {
-    void run()
+    void Run()
     {
-        init();
-        execute("market_data", "test");
+        Initialize();
+        Execute("market_data.maths", "multiply");
+        Finalize();
     }
 
-    void init()
+    void Initialize()
     {
         Py_Initialize();
 
-        // Add current directory (of executable) to Python system path.
+        // Add pymodules to Python system path.
+        //
         // Required for importing relative Python modules.
         PyObject * py_path = PySys_GetObject((char *) "path");
-        PyList_Append(py_path, PyUnicode_FromString("."));
+        PyList_Append(py_path, PyUnicode_FromString("./pymodules"));
     }
 
-    auto execute(std::string module_name, std::string func_name) -> bool
+    void Finalize()
+    {
+        Py_Finalize();
+    }
+
+    auto Execute(std::string module_name, std::string func_name) -> bool
     {
         PyObject * pystr = PyUnicode_FromString(module_name.c_str());
         PyObject * py_module = PyImport_Import(pystr);
@@ -32,6 +39,20 @@ namespace py_interface {
         if (py_module != nullptr)
         {
             std::cout << "Module found" << std::endl;
+            PyObject * func = PyObject_GetAttrString(py_module, func_name.c_str());
+            if (func != nullptr)
+            {
+                PyObject * pArgs = PyTuple_New(2);
+
+                PyObject * pVal1 = PyLong_FromLong(6);
+                PyObject * pVal2 = PyLong_FromLong(4);
+
+                PyTuple_SetItem(pArgs, 0, pVal1);
+                PyTuple_SetItem(pArgs, 1, pVal2);
+
+                PyObject * result = PyObject_CallObject(func, pArgs);
+                std::cout << "Result: " << PyLong_AsLong(result) << std::endl;
+            }
         }
         else
         {

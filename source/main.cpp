@@ -4,7 +4,7 @@
 
 int main( int argc, char * argv[] )
 {
-    py_interface::run();
+    py_interface::Run();
 
     return 0;
 }
