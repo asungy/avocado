@@ -1,23 +1,33 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
+#include <iostream>
+
 #include "python.hpp"
 
-namespace Python {
-    void run(char * argv) 
+namespace py_interface {
+    void init()
     {
-        wchar_t *program = Py_DecodeLocale(argv, NULL);
-        if (program == NULL) {
-            fprintf(stderr, "Fatal error: cannot decode argv[0]\n");
-            exit(1);
-        }
-        Py_SetProgramName(program);  /* optional but recommended */
         Py_Initialize();
-        PyRun_SimpleString("from time import time,ctime\n"
-                           "print('Today is', ctime(time()))\n");
-        if (Py_FinalizeEx() < 0) {
-            exit(120);
+
+        // Add current directory (of executable) to Python system path.
+        // Required for importing relative Python modules.
+        PyObject * py_path = PySys_GetObject((char *) "path");
+        PyList_Append(py_path, PyUnicode_FromString("."));
+    }
+
+    void run() 
+    {
+        PyObject * module_name = PyUnicode_FromString("avotest");
+        PyObject * py_module = PyImport_Import(module_name);
+
+        if (py_module != nullptr)
+        {
+            std::cout << "Module found" << std::endl;
         }
-        PyMem_RawFree(program);
+        else
+        {
+            std::cout << "Module not found" << std::endl;
+        }
     }
 }

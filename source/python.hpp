@@ -1,3 +1,4 @@
-namespace Python {
-    void run(char * argv);
+namespace py_interface {
+    void init();
+    void run();
 }
