@@ -1,0 +1,5 @@
+# Build directory
+build/
+
+# Python cache directory
+__pycache__
