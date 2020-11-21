@@ -8,6 +8,9 @@ set( CMAKE_CXX_COMPILER g++ )
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED True )
 
+# Set runtime output location
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
+
 # Add internal libraries
 add_subdirectory( source/python )
 
@@ -21,4 +24,4 @@ add_executable( Avocado source/main.cpp )
 target_link_libraries( Avocado PRIVATE py-interface )
 
 # Copy Python modules to build directory
-file( COPY pymodules DESTINATION ${CMAKE_BINARY_DIR} )
+file( COPY pymodules DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
