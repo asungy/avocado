@@ -11,6 +11,9 @@ set( CMAKE_CXX_STANDARD_REQUIRED True )
 # Set runtime output location
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 
+# Set compiler flags
+add_compile_options( -Wall -Werror -O3 )
+
 # Add internal libraries
 add_subdirectory( source/python )
 add_subdirectory( source/cmd )
