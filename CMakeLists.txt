@@ -27,4 +27,4 @@ target_link_libraries( Avocado PRIVATE py-interface )
 target_link_libraries( Avocado PRIVATE command )
 
 # Copy Python modules to build directory
-file( COPY pymodules DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
+file( COPY pymodules DESTINATION ${CMAKE_BINARY_DIR} )

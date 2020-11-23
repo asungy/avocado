@@ -5,15 +5,21 @@
 namespace command {
     int Run(int argc, char * argv[])
     {
-        CLI::App app{"App description"};
+        CLI::App root_cmd{ "Avocado CLI" };
+        CLI::App * multiply_cmd = root_cmd.add_subcommand("multiply", "Muliply two numbers");
 
-        // Define options
-        int p = 0;
-        app.add_option("-p", p, "Parameter");
+        std::vector<int> factors;
+        multiply_cmd->add_option("factors", factors, "two numbers to multiply");
 
-        CLI11_PARSE(app, argc, argv);
+        try {
+            root_cmd.parse(argc, argv);
+        } catch (const CLI::ParseError &e) {
+            return root_cmd.exit(e);
+        }
 
-        std::cout << "Parameter value: " << p << std::endl;
+        std::cout << "First factor: " << factors[0] << std::endl
+                  << "Second factor: " << factors[1] << std::endl;
+
 
         return 0;
     }
