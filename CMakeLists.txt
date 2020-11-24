@@ -12,7 +12,7 @@ set( CMAKE_CXX_STANDARD_REQUIRED True )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 
 # Set compiler flags
-add_compile_options( -Wall -Werror -O3 )
+add_compile_options( -Wall -Werror -ggdb )
 
 # Add internal libraries
 add_subdirectory( source/python )
@@ -26,8 +26,8 @@ include_directories( source/cmd )
 add_executable( Avocado source/main.cpp )
 
 # Specify libraries during linking
-target_link_libraries( Avocado PRIVATE py-interface )
-target_link_libraries( Avocado PRIVATE command )
+target_link_libraries( Avocado PRIVATE PyInterface )
+target_link_libraries( Avocado PRIVATE Command )
 
 # Copy Python modules to build directory
 file( COPY pymodules DESTINATION ${CMAKE_BINARY_DIR} )

@@ -5,8 +5,8 @@ find_path( PYTHON_INCLUDE_PATH Python.h /usr/include/python3.8 )
 include_directories( ${PYTHON_INCLUDE_PATH} )
 
 add_library(
-    py-interface
+    PyInterface
     python.cpp
     )
 
-target_link_libraries( py-interface PRIVATE python3.8 )
+target_link_libraries( PyInterface PRIVATE python3.8 )

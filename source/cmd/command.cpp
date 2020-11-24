@@ -1,6 +1,7 @@
 #include "CLI11/CLI11.hpp"
 
 #include "command.hpp"
+#include "../python/python.hpp"
 
 namespace command {
     int Run(int argc, char * argv[])
@@ -20,6 +21,7 @@ namespace command {
         std::cout << "First factor: " << factors[0] << std::endl
                   << "Second factor: " << factors[1] << std::endl;
 
+        py_interface::Run();
 
         return 0;
     }
