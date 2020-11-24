@@ -3,3 +3,6 @@ build/
 
 # Python cache directory
 __pycache__
+
+# Visual Studio Code meta data
+.vscode/

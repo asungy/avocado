@@ -7,4 +7,5 @@
       sudo apt update
       sudo apt install g++-9
       ```
-- [Python](https://www.python.org/downloads/) (version 3.9 or greater)
+- python3.8 (or greater)
+- [libpython](https://pkgs.org/download/libpython3.8-dev) (version 3.8 or greater)

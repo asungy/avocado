@@ -1,3 +1,4 @@
+# This is a test function
 def multiply(a, b):
     print("Will compute", a, "times", b)
     c = 0
