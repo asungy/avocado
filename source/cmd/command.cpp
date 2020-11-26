@@ -18,12 +18,8 @@ namespace command {
             return root_cmd.exit(e);
         }
 
-        std::cout << "First factor: " << factors[0] << std::endl
-                  << "Second factor: " << factors[1] << std::endl;
-
-        py_interface::Initialize();
-        py_interface::Call_Multiply(factors[0], factors[1]);
-        py_interface::Finalize();
+        // std::cout << "First factor: " << factors[0] << std::endl
+        //           << "Second factor: " << factors[1] << std::endl;
 
         return 0;
     }
