@@ -8,4 +8,5 @@ namespace py_interface {
 
     auto Execute(std::string module_name, std::string func_name) -> bool;
     void GetFakeData();
+    void GetFakeList();
 }

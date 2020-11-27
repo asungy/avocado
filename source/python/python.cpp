@@ -11,7 +11,7 @@ namespace py_interface {
     {
         Initialize();
         // Execute("market_data", "multiply");
-        GetFakeData();
+        GetFakeList();
         Finalize();
     }
 
@@ -99,6 +99,57 @@ namespace py_interface {
                 Py_DECREF(pArgs);
                 Py_DECREF(pVal);
                 Py_DECREF(result);
+            }
+        }
+        else
+        {
+            std::cout << "Module not found" << std::endl;
+        }
+    }
+
+    void GetFakeList()
+    {
+        PyObject * pystr = PyUnicode_FromString("market_data");
+        PyObject * py_module = PyImport_Import(pystr);
+        Py_DECREF(pystr);
+
+        if (py_module != nullptr)
+        {
+            std::cout << "Module found" << std::endl;
+            PyObject * func = PyObject_GetAttrString(py_module, "get_data_list");
+            if (func != nullptr)
+            {
+                PyObject * pArgs = PyTuple_New(2);
+                PyObject * pVal1 = PyUnicode_FromString("MSFT");
+                PyObject * pVal2 = PyLong_FromLong(10);
+                PyTuple_SetItem(pArgs, 0, pVal1);
+                PyTuple_SetItem(pArgs, 1, pVal2);
+
+                PyObject * result = PyObject_CallObject(func, pArgs);
+                Py_DECREF(func);
+                
+                for (int i = 0; i < 10; ++i)
+                {
+                    PyObject * item = PyList_GetItem(result, i);
+
+                    PyObject * symbol = PyUnicode_AsEncodedString(PyDict_GetItemString(item, "symbol"), "utf-8", "strict");
+                    std::cout << "symbol: " << PyBytes_AS_STRING(symbol) << std::endl
+                              << "open: " << PyFloat_AsDouble(PyDict_GetItemString(item, "open")) << std::endl
+                              << "high: " << PyFloat_AsDouble(PyDict_GetItemString(item, "high")) << std::endl
+                              << "low: " << PyFloat_AsDouble(PyDict_GetItemString(item, "low")) << std::endl
+                              << "close: " << PyFloat_AsDouble(PyDict_GetItemString(item, "close")) << std::endl
+                              << "volume: " << PyLong_AsLong(PyDict_GetItemString(item, "volume")) << std::endl << std::endl;
+                }
+
+                std::cout << "pArgs reference count: " << Py_REFCNT(pArgs) << std::endl;
+                Py_DECREF(pArgs);
+                std::cout << "pArgs reference count: " << Py_REFCNT(pArgs) << std::endl;
+                Py_DECREF(pVal1);
+                Py_DECREF(pVal2);
+
+                std::cout << "result reference count: " << Py_REFCNT(result) << std::endl;
+                Py_DECREF(result);
+                std::cout << "result reference count: " << Py_REFCNT(result) << std::endl;
             }
         }
         else
