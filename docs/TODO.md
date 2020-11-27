@@ -1,7 +1,7 @@
 # To-do
 - ~~Setup InfluxDB~~
 - ~~Create dummy stock data~~
-- Make python interface return a list of dummy stock data to C++
+- ~~Make python interface return a list of dummy stock data to C++~~
 - CMake set up googletest
 
 - Have CLI11 parse different python interface commands

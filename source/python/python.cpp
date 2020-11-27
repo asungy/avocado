@@ -141,15 +141,7 @@ namespace py_interface {
                               << "volume: " << PyLong_AsLong(PyDict_GetItemString(item, "volume")) << std::endl << std::endl;
                 }
 
-                std::cout << "pArgs reference count: " << Py_REFCNT(pArgs) << std::endl;
-                Py_DECREF(pArgs);
-                std::cout << "pArgs reference count: " << Py_REFCNT(pArgs) << std::endl;
-                Py_DECREF(pVal1);
-                Py_DECREF(pVal2);
-
-                std::cout << "result reference count: " << Py_REFCNT(result) << std::endl;
                 Py_DECREF(result);
-                std::cout << "result reference count: " << Py_REFCNT(result) << std::endl;
             }
         }
         else
