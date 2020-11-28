@@ -1,7 +1,17 @@
+# Do not allow in-source builds
+if ( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR} )
+    message(FATAL_ERROR
+        "CMake generation for Avocado is not allowed within the source directory.\n"
+        "Remove CMakeCache.txt and CMakeFiles/ and try again.\n"
+        "mkdir build && cd build\n"
+        "cmake .."
+    )
+endif()
+
 cmake_minimum_required( VERSION 3.19 )
 
 # Set project name
-project( Avocado )
+project( Avocado CXX )
 
 # Note: Specifying C++ compiler causes googletest to build in a loop
 # set( CMAKE_CXX_COMPILER /usr/bin/g++ )
