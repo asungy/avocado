@@ -6,10 +6,14 @@
 - ~~Conditionally build test program~~
 
 - Have CLI11 parse different python interface commands
+    - `avocado python multiply [num1] [num2]`
+    - `avocado python get_fake_data --count [max]`
 
 - Learn to write and query data in C++
+    - `avocado database update`
 
 - Research importing/exporting data to and from InfluxDB
+    - `avocado database export`
 
 - Harvest stock securities from stock exchange
     - https://www.nyse.com/listings_directory/stock
