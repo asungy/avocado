@@ -3,9 +3,7 @@
 - ~~Create dummy stock data~~
 - ~~Make python interface return a list of dummy stock data to C++~~
 - ~~CMake set up googletest~~
-
-- Conditionally build test program
-- Create test cases for retrieving dummy data
+- ~~Conditionally build test program~~
 
 - Have CLI11 parse different python interface commands
 
