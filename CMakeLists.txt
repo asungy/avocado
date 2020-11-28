@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.10 )
+cmake_minimum_required( VERSION 3.19 )
 
 # Set project name
 project( Avocado )
@@ -10,6 +10,9 @@ set( CMAKE_CXX_STANDARD_REQUIRED True )
 
 # Set runtime output location
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
+
+# Enable testing for current directory and below
+enable_testing()
 
 # Set compiler flags
 add_compile_options( -Wall -Werror -ggdb )

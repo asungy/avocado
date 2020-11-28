@@ -1,3 +1,4 @@
+cmake_minimum_required( VERSION 3.19 )
 
 # Add Python 3 API
 find_package( Python 3.8 REQUIRED COMPONENTS Interpreter Development )
