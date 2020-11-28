@@ -5,7 +5,7 @@ find_path( PYTHON_INCLUDE_PATH Python.h /usr/include/python3.8 )
 include_directories( ${PYTHON_INCLUDE_PATH} )
 
 add_library(
-    PyInterface
+    PyInterface STATIC
     python.cpp
     )
 

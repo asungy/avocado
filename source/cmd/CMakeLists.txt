@@ -1,5 +1,5 @@
 add_library(
-    Command
+    Command STATIC
     command.cpp
     )
 
