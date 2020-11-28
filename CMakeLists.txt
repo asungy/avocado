@@ -3,8 +3,10 @@ cmake_minimum_required( VERSION 3.19 )
 # Set project name
 project( Avocado )
 
-# Specify C++ compiler
-set( CMAKE_CXX_COMPILER g++ )
+# Note: Specifying C++ compiler causes googletest to build in a loop
+# set( CMAKE_CXX_COMPILER /usr/bin/g++ )
+
+# Specify C++ compiler standard
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED True )
 
@@ -20,10 +22,12 @@ add_compile_options( -Wall -Werror -ggdb )
 # Add internal libraries
 add_subdirectory( source/python )
 add_subdirectory( source/cmd )
+add_subdirectory( test )
 
 # Add directories with header files
 include_directories( source/python )
 include_directories( source/cmd )
+include_directories( test )
 
 # Add executable
 add_executable( Avocado source/main.cpp )

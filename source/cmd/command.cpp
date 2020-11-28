@@ -23,4 +23,10 @@ namespace command {
 
         return 0;
     }
+
+
+    auto TestFunction() -> int
+    {
+        return 42;
+    }
 }
