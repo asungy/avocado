@@ -21,6 +21,9 @@ namespace command {
         std::vector<int> factors = {};
         multiply_cmd->add_option("factors", factors, "two numbers to multiply");
 
+        // Add database commands
+        // TODO: Implement
+
         // Parse command
         try 
         {
