@@ -1,8 +1,10 @@
+#pragma once 
+
 namespace command {
-    int Run(int argc, char * argv[]);
+    void Run(int argc, char * argv[]);
 
     // Test function used as a placeholder in the test suite for now
-    auto TestFunction() -> int
+    inline auto TestFunction() -> int
     {
         return 42;
     }

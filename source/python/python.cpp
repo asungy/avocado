@@ -10,7 +10,6 @@ namespace py_interface {
     void Run()
     {
         Initialize();
-        // Execute("market_data", "multiply");
         GetFakeList();
         Finalize();
     }
@@ -31,42 +30,34 @@ namespace py_interface {
         Py_Finalize();
     }
 
-    auto Execute(std::string module_name, std::string func_name) -> bool
+    void Call_Multiply(int val_a, int val_b)
     {
-        PyObject * pystr = PyUnicode_FromString(module_name.c_str());
+        PyObject * pystr = PyUnicode_FromString("market_data");
         PyObject * py_module = PyImport_Import(pystr);
         Py_DECREF(pystr);
 
         if (py_module != nullptr)
         {
             std::cout << "Module found" << std::endl;
-            PyObject * func = PyObject_GetAttrString(py_module, func_name.c_str());
+            PyObject * func = PyObject_GetAttrString(py_module, "multiply");
             if (func != nullptr)
             {
                 PyObject * pArgs = PyTuple_New(2);
 
-                PyObject * pVal1 = PyLong_FromLong(6);
-                PyObject * pVal2 = PyLong_FromLong(4);
+                PyObject * pVal1 = PyLong_FromLong(val_a);
+                PyObject * pVal2 = PyLong_FromLong(val_b);
 
                 PyTuple_SetItem(pArgs, 0, pVal1);
                 PyTuple_SetItem(pArgs, 1, pVal2);
 
                 PyObject * result = PyObject_CallObject(func, pArgs);
                 std::cout << "Result: " << PyLong_AsLong(result) << std::endl;
-
-                Py_DECREF(func);
-                Py_DECREF(pArgs);
-                Py_DECREF(pVal1);
-                Py_DECREF(pVal2);
-                Py_DECREF(result);
             }
         }
         else
         {
             std::cout << "Module not found" << std::endl;
         }
-
-        return true;
     }
 
     void GetFakeData()
