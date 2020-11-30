@@ -27,9 +27,9 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 add_compile_options( -Wall -Werror -ggdb )
 
 # Add internal libraries
-add_subdirectory( source/python )
-add_subdirectory( source/cmd )
 add_subdirectory( source/influx )
+add_subdirectory( source/python )
+add_subdirectory( source/cli )
 
 # Create testing suite
 if ( NOT DEFINED Build_Tests )
@@ -41,17 +41,17 @@ if ( Build_Tests )
 endif()
 
 # Add directories with header files
-include_directories( source/python )
-include_directories( source/cmd )
 include_directories( source/influx )
+include_directories( source/python )
+include_directories( source/cli )
 
 # Add executable
 add_executable( Avocado source/main.cpp )
 
 # Specify libraries during linking
-target_link_libraries( Avocado PRIVATE PyInterface )
-target_link_libraries( Avocado PRIVATE Command )
 target_link_libraries( Avocado PRIVATE Influx )
+target_link_libraries( Avocado PRIVATE PyInterface )
+target_link_libraries( Avocado PRIVATE CLI )
 
 # Copy Python modules to build directory
 file( COPY pymodules DESTINATION ${CMAKE_BINARY_DIR} )

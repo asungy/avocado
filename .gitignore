@@ -6,3 +6,6 @@ __pycache__
 
 # Visual Studio Code meta data
 .vscode/
+
+# Directory for configuration files
+.config/

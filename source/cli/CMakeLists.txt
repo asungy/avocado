@@ -1,11 +1,14 @@
 cmake_minimum_required( VERSION 3.19 )
 
 add_library(
-    Command STATIC
-    command.cpp
+    CLI STATIC
+    cli.cpp
     )
 
 include_directories( third_party )
 
 # Adding PyInterface library 
-target_link_libraries( Command PRIVATE PyInterface )
+target_link_libraries( 
+    CLI PRIVATE 
+    Influx
+    PyInterface )

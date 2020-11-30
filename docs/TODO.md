@@ -7,9 +7,13 @@
 - ~~Have CLI11 parse different python interface commands~~
     - `avocado python multiply [num1] [num2]`
     - `avocado python get_fake_data`
+- ~~Rename `cmd` library to `cli`~~
 
 - Learn to write and query data in C++
     - `avocado database update`
+    - Read token from file
+
+- Make InfluxDB object to store credentials
 
 - Research importing/exporting data to and from InfluxDB
     - `avocado database export`

@@ -1,10 +1,13 @@
 #include "CLI11/CLI11.hpp"
 
-#include "command.hpp"
+#include "../influx/influx.hpp"
 #include "../python/python.hpp"
+#include "cli.hpp"
+
+#include <cassert>
 
 namespace command {
-    void Run(int argc, char * argv[])
+    int Run(int argc, char * argv[])
     {
         CLI::App root_cmd{ "Avocado CLI" };
 
@@ -12,30 +15,29 @@ namespace command {
         CLI::App * python_cmd = 
             root_cmd.add_subcommand("python", "test command for python interface");
 
-        CLI::App * multiply_cmd = 
-            python_cmd->add_subcommand("multiply", "multiply two numbers");
+        CLI::App * multiply_cmd = python_cmd->add_subcommand("multiply", "multiply two numbers");
+        CLI::App * get_fake_data_cmd = python_cmd->add_subcommand("fake-data", "get fake data");
 
-        CLI::App * get_fake_data_cmd = 
-            python_cmd->add_subcommand("fake-data", "get fake data");
-
-        std::vector<int> factors = {};
+        std::vector<int> factors;
         multiply_cmd->add_option("factors", factors, "two numbers to multiply");
 
         // Add database commands
-        // TODO: Implement
+        std::string tokenfile;
+        CLI::App * database_cmd = root_cmd.add_subcommand("database", "interact with database");
+        database_cmd->add_option("--tokenfile", tokenfile, "File containing Influx user token");
+
+        CLI::App * add_point_cmd = 
+            database_cmd->add_subcommand("add_point", "Adds a point to database");
 
         // Parse command
-        try 
-        {
-            root_cmd.parse(argc, argv);
-        } 
-        catch (const CLI::ParseError &e)
-        {
-            root_cmd.exit(e);
-        }
+        CLI11_PARSE(root_cmd, argc, argv);
 
         // Check if command was received
-        if (multiply_cmd->parsed())
+        if (add_point_cmd->parsed())
+        {
+            influx::Run(tokenfile);
+        }
+        else if (multiply_cmd->parsed())
         {
             if (factors.size() == 2)
             {
@@ -54,5 +56,7 @@ namespace command {
             py_interface::GetFakeList();
             py_interface::Finalize();
         }
+
+        return 0;
     }
 }

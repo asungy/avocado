@@ -1,3 +1,3 @@
 namespace influx {
-    void Run();
+    void Run(std::string filepath);
 }
