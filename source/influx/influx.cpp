@@ -1,5 +1,10 @@
 #include "influx.hpp"
 
-namespace influx {
+#include <iostream>
 
+namespace influx {
+    void Run()
+    {
+        std::cout << "hello world" << std::endl;
+    }
 }

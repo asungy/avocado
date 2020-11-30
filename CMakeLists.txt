@@ -29,6 +29,7 @@ add_compile_options( -Wall -Werror -ggdb )
 # Add internal libraries
 add_subdirectory( source/python )
 add_subdirectory( source/cmd )
+add_subdirectory( source/influx )
 
 # Create testing suite
 if ( NOT DEFINED Build_Tests )
@@ -42,6 +43,7 @@ endif()
 # Add directories with header files
 include_directories( source/python )
 include_directories( source/cmd )
+include_directories( source/influx )
 
 # Add executable
 add_executable( Avocado source/main.cpp )
@@ -49,6 +51,7 @@ add_executable( Avocado source/main.cpp )
 # Specify libraries during linking
 target_link_libraries( Avocado PRIVATE PyInterface )
 target_link_libraries( Avocado PRIVATE Command )
+target_link_libraries( Avocado PRIVATE Influx )
 
 # Copy Python modules to build directory
 file( COPY pymodules DESTINATION ${CMAKE_BINARY_DIR} )
