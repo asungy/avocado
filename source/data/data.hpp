@@ -1,3 +1,5 @@
+#pragma once
+
 namespace stock {
     struct DataPoint
     {

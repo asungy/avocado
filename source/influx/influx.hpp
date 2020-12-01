@@ -1,3 +1,8 @@
+#pragma once
+
+#include "../data/data.hpp"
+
 namespace influx {
-    void Run(std::string filepath);
+    void Write(std::string filepath, stock::DataPoint data);
+    std::string ToLineProtocal(std::string measurement, stock::DataPoint data, bool timestamped);
 }

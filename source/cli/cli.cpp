@@ -36,15 +36,9 @@ namespace command {
         if (add_point_cmd->parsed())
         {
             py_interface::Initialize();
-            stock::DataPoint pt = py_interface::GetFakeData("AAPL");
+            stock::DataPoint data = py_interface::GetFakeData("AAPL");
             py_interface::Finalize();
-            std::cout << "symbol: " << pt.symbol << std::endl
-                      << "open: " << pt.open << std::endl
-                      << "high: " << pt.high << std::endl
-                      << "low: " << pt.low << std::endl
-                      << "close: " << pt.close << std::endl
-                      << "volume: " << pt.volume << std::endl;
-            // influx::Run(tokenfile);
+            influx::Write(tokenfile, data);
         }
         else if (multiply_cmd->parsed())
         {
