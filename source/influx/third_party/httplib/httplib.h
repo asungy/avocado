@@ -836,6 +836,8 @@ public:
               const MultipartFormDataItems &items);
   Result Post(const char *path, const Headers &headers,
               const MultipartFormDataItems &items, const std::string &boundary);
+  Result Post(const char * path, const Headers &headers, 
+              const Params &params, const std::string &body);
 
   Result Put(const char *path);
   Result Put(const char *path, const std::string &body,
@@ -1109,6 +1111,8 @@ public:
               const MultipartFormDataItems &items);
   Result Post(const char *path, const Headers &headers,
               const MultipartFormDataItems &items, const std::string &boundary);
+  Result Post(const char *path, const Headers &headers, const Params &params,
+              const std::string &body);
   Result Put(const char *path);
   Result Put(const char *path, const std::string &body,
              const char *content_type);
@@ -5643,6 +5647,15 @@ inline Result ClientImpl::Post(const char *path, const Headers &headers,
   return Post(path, headers, body, content_type.c_str());
 }
 
+inline Result ClientImpl::Post(const char * path, const Headers &headers, 
+                               const Params &params, const std::string &body) {
+    std::string query = detail::params_to_query_str(params);
+    std::string path_with_query{ path };
+    path_with_query += "?";
+    path_with_query += query;
+    return Post(path_with_query.c_str(), headers, body, "application/x-www-form-urlencoded");
+}
+
 inline Result ClientImpl::Put(const char *path) {
   return Put(path, std::string(), nullptr);
 }
@@ -6771,6 +6784,10 @@ inline Result Client::Post(const char *path, const Headers &headers,
                            const MultipartFormDataItems &items,
                            const std::string &boundary) {
   return cli_->Post(path, headers, items, boundary);
+}
+inline Result Client::Post(const char *path, const Headers &headers, const Params &params,
+                           const std::string &body) {
+  return cli_->Post(path, headers, params, body);
 }
 inline Result Client::Put(const char *path) { return cli_->Put(path); }
 inline Result Client::Put(const char *path, const std::string &body,

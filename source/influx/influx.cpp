@@ -30,8 +30,7 @@ namespace influx {
 
         std::string body{ ToLineProtocal("market_data", data, false) }; 
 
-        // if (auto res = cli.Post("/api/v2/write?bucket=test_bucket&org=test", headers, body, "text/plain"))
-        if (auto res = cli.Post("/api/v2/write", headers, params))
+        if (auto res = cli.Post("/api/v2/write", headers, params, body))
         {
             std::cout << "Body: " << res->body << std::endl;
         }
