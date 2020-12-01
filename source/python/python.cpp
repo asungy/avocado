@@ -60,7 +60,7 @@ namespace py_interface {
         }
     }
 
-    void GetFakeData()
+    stock::DataPoint GetFakeData(std::string symbol)
     {
         PyObject * pystr = PyUnicode_FromString("market_data");
         PyObject * py_module = PyImport_Import(pystr);
@@ -73,29 +73,29 @@ namespace py_interface {
             if (func != nullptr)
             {
                 PyObject * pArgs = PyTuple_New(1);
-                PyObject * pVal = PyUnicode_FromString("AAPL");
+                PyObject * pVal = PyUnicode_FromString(symbol.c_str());
                 PyTuple_SetItem(pArgs, 0, pVal);
 
                 PyObject * result = PyObject_CallObject(func, pArgs);
                 
-                PyObject * symbol = PyUnicode_AsEncodedString(PyDict_GetItemString(result, "symbol"), "utf-8", "strict");
-                std::cout << "symbol: " << PyBytes_AS_STRING(symbol) << std::endl
-                          << "open: " << PyFloat_AsDouble(PyDict_GetItemString(result, "open")) << std::endl
-                          << "high: " << PyFloat_AsDouble(PyDict_GetItemString(result, "high")) << std::endl
-                          << "low: " << PyFloat_AsDouble(PyDict_GetItemString(result, "low")) << std::endl
-                          << "close: " << PyFloat_AsDouble(PyDict_GetItemString(result, "close")) << std::endl
-                          << "volume: " << PyLong_AsLong(PyDict_GetItemString(result, "volume")) << std::endl;
+                PyObject * py_symbol = PyUnicode_AsEncodedString(PyDict_GetItemString(result, "symbol"), "utf-8", "strict");
 
-                Py_DECREF(func);
-                Py_DECREF(pArgs);
-                Py_DECREF(pVal);
+                stock::DataPoint pt{ 
+                    PyBytes_AS_STRING(py_symbol),
+                    PyFloat_AsDouble(PyDict_GetItemString(result, "open")),
+                    PyFloat_AsDouble(PyDict_GetItemString(result, "high")),
+                    PyFloat_AsDouble(PyDict_GetItemString(result, "low")),
+                    PyFloat_AsDouble(PyDict_GetItemString(result, "close")),
+                    0 // timestamp
+                };
+
                 Py_DECREF(result);
+
+                return pt;
             }
         }
-        else
-        {
-            std::cout << "Module not found" << std::endl;
-        }
+
+        throw std::runtime_error("pymodule market_data could not be found");
     }
 
     void GetFakeList()

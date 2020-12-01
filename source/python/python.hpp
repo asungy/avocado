@@ -1,4 +1,4 @@
-#include <string>
+#include "../data/data.hpp"
 
 namespace py_interface {
     void Run();
@@ -6,8 +6,7 @@ namespace py_interface {
     void Initialize();
     void Finalize();
 
-
     void Call_Multiply(int val_a, int val_b);
-    void GetFakeData();
+    stock::DataPoint GetFakeData(std::string symbol);
     void GetFakeList();
 }
