@@ -13,7 +13,8 @@ namespace influx {
     // If an error occurs while trying to read the file, a `runtime_error` is thrown.
     std::string GetTokenFromFile(std::string filepath);
 
-    void Write(std::string filepath, stock::DataPoint data)
+    void Write(std::string filepath, std::string bucket, std::string org,
+               std::string measurement, stock::DataPoint data)
     {
         httplib::Client cli("localhost", 8086);
 
@@ -24,14 +25,15 @@ namespace influx {
         };
 
         httplib::Params params{
-            { "bucket", "test_bucket" },
-            { "org", "test" }
+            { "bucket", bucket.c_str() },
+            { "org", org.c_str() }
         };
 
-        std::string body{ ToLineProtocal("market_data", data, false) }; 
+        std::string body{ ToLineProtocal(measurement, data, false) }; 
 
         if (auto res = cli.Post("/api/v2/write", headers, params, body))
         {
+            // TODO: Replace with logging
             std::cout << "Body: " << res->body << std::endl;
         }
         else
@@ -43,10 +45,10 @@ namespace influx {
     std::string ToLineProtocal(std::string measurement, stock::DataPoint data, bool timestamped)
     {
         std::string result{measurement};
-        result += ",symbol=" + data.symbol;
         // Appending tag
-        result += " open=" + std::to_string(data.open);
+        result += ",symbol=" + data.symbol;
         // Appending fields
+        result += " open=" + std::to_string(data.open);
         result += ",high=" + std::to_string(data.high);
         result += ",low=" + std::to_string(data.low);
         result += ",close=" + std::to_string(data.close);
