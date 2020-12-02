@@ -1,4 +1,5 @@
 #include "httplib/httplib.h"
+#include "spdlog/spdlog.h"
 
 #include "influx.hpp"
 
@@ -33,12 +34,14 @@ namespace influx {
 
         if (auto res = cli.Post("/api/v2/write", headers, params, body))
         {
-            // TODO: Replace with logging
-            std::cout << "Body: " << res->body << std::endl;
+            if (res->status >= 400)
+                spdlog::error("Error: {}", res->body);
+            else
+                spdlog::info("Data successfully written to '{}' bucket.", bucket);
         }
         else
         {
-            std::cout << "Error: " << res.error() << std::endl;
+            spdlog::error("Error occurred writing to Influx database: {}.", res.error());
         }
     }
 
@@ -71,7 +74,11 @@ namespace influx {
             token.append(token_val);
             return token;
         }
+        const char * error_message = 
+            "Error occurred while trying to read token from file. "
+            "Setting token to empty string (\"\").";
+        spdlog::error(error_message);
 
-        throw std::runtime_error("Error occurred while trying to read token from file.");
+        return "";
     }
 }

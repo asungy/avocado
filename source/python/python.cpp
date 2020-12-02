@@ -34,7 +34,6 @@ namespace py_interface {
 
         if (py_module != nullptr)
         {
-            std::cout << "Module found" << std::endl;
             PyObject * func = PyObject_GetAttrString(py_module, "get_fake_data");
             if (func != nullptr)
             {

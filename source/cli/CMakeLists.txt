@@ -6,9 +6,11 @@ add_library(
     )
 
 include_directories( third_party )
+include_directories( ../third_party/spdlog/include )
 
 # Adding PyInterface library 
 target_link_libraries( 
     CLI PRIVATE 
     Influx
-    PyInterface )
+    PyInterface 
+    spdlog::spdlog )
