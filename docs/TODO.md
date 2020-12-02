@@ -1,6 +1,4 @@
 # To-do
-- Add logging
-
 - Read from a config file (to locate pymodules and token file)
 
 - Make InfluxDB object to store credentials
@@ -13,3 +11,6 @@
 - Use stock securities list to harvest market data from AlphaVantage
     - Time series data
     - Fundamental data
+
+- Set compiler options for debug vs optimized binary
+    - More research on proper CMake set up

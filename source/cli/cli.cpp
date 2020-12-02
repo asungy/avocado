@@ -43,6 +43,10 @@ namespace command {
             py_interface::GetFakeList();
             py_interface::Finalize();
         }
+        else
+        {
+            std::cout << root_cmd.help() << std::endl;
+        }
 
         return 0;
     }
