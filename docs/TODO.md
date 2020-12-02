@@ -11,6 +11,10 @@
 - ~~Learn to write and query data in C++~~
     - ~~Read token from file~~
 
+- Add logging
+
+- Read from a config file (to locate pymodules and token file)
+
 - Make InfluxDB object to store credentials
 
 - Research importing/exporting data to and from InfluxDB

@@ -8,11 +8,7 @@
 
 namespace py_interface {
     void Run()
-    {
-        Initialize();
-        GetFakeList();
-        Finalize();
-    }
+    { /* Purposefully empty. Used for development purposes. */ }
 
     void Initialize()
     {
@@ -28,36 +24,6 @@ namespace py_interface {
     void Finalize()
     {
         Py_Finalize();
-    }
-
-    void Call_Multiply(int val_a, int val_b)
-    {
-        PyObject * pystr = PyUnicode_FromString("market_data");
-        PyObject * py_module = PyImport_Import(pystr);
-        Py_DECREF(pystr);
-
-        if (py_module != nullptr)
-        {
-            std::cout << "Module found" << std::endl;
-            PyObject * func = PyObject_GetAttrString(py_module, "multiply");
-            if (func != nullptr)
-            {
-                PyObject * pArgs = PyTuple_New(2);
-
-                PyObject * pVal1 = PyLong_FromLong(val_a);
-                PyObject * pVal2 = PyLong_FromLong(val_b);
-
-                PyTuple_SetItem(pArgs, 0, pVal1);
-                PyTuple_SetItem(pArgs, 1, pVal2);
-
-                PyObject * result = PyObject_CallObject(func, pArgs);
-                std::cout << "Result: " << PyLong_AsLong(result) << std::endl;
-            }
-        }
-        else
-        {
-            std::cout << "Module not found" << std::endl;
-        }
     }
 
     stock::DataPoint GetFakeData(std::string symbol)
