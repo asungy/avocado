@@ -30,6 +30,13 @@ add_compile_options( -Wall -Werror -ggdb )
 add_subdirectory( source/influx )
 add_subdirectory( source/python )
 add_subdirectory( source/cli )
+add_subdirectory( source/third_party/spdlog )
+
+# Add directories with header files
+include_directories( source/influx )
+include_directories( source/python )
+include_directories( source/cli )
+include_directories( source/third_party/spdlog/include )
 
 # Create testing suite
 if ( NOT DEFINED Build_Tests )
@@ -40,11 +47,6 @@ if ( Build_Tests )
     add_subdirectory( test )
 endif()
 
-# Add directories with header files
-include_directories( source/influx )
-include_directories( source/python )
-include_directories( source/cli )
-
 # Add executable
 add_executable( Avocado source/main.cpp )
 
@@ -52,6 +54,7 @@ add_executable( Avocado source/main.cpp )
 target_link_libraries( Avocado PRIVATE Influx )
 target_link_libraries( Avocado PRIVATE PyInterface )
 target_link_libraries( Avocado PRIVATE CLI )
+target_link_libraries( Avocado PRIVATE spdlog::spdlog )
 
 # Copy Python modules to build directory
 file( COPY pymodules DESTINATION ${CMAKE_BINARY_DIR} )
