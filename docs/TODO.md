@@ -1,16 +1,4 @@
 # To-do
-- ~~Setup InfluxDB~~
-- ~~Create dummy stock data~~
-- ~~Make python interface return a list of dummy stock data to C++~~
-- ~~CMake set up googletest~~
-- ~~Conditionally build test program~~
-- ~~Have CLI11 parse different python interface commands~~
-    - `avocado python multiply [num1] [num2]`
-    - `avocado python get_fake_data`
-- ~~Rename `cmd` library to `cli`~~
-- ~~Learn to write and query data in C++~~
-    - ~~Read token from file~~
-
 - Add logging
 
 - Read from a config file (to locate pymodules and token file)
