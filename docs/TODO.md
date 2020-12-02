@@ -1,6 +1,4 @@
 # To-do
-- Add logging
-
 - Read from a config file (to locate pymodules and token file)
 
 - Make InfluxDB object to store credentials
