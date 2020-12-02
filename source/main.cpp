@@ -1,13 +1,11 @@
 #include <iostream>
 
-#include "command.hpp"
+#include "cli.hpp"
 #include "python.hpp"
+#include "influx.hpp"
 
 
 int main( int argc, char * argv[] )
 {
-    // py_interface::Run();
-    command::Run(argc, argv);
-
-    return 0;
+    return command::Run(argc, argv);
 }
