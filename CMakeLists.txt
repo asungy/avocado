@@ -11,7 +11,10 @@ endif()
 cmake_minimum_required( VERSION 3.19 )
 
 # Set project name
-project( Avocado CXX )
+project( Avocado 
+    HOMEPAGE_URL https://github.com/asungy/avocado
+    LANGUAGES CXX 
+)
 
 # Note: Specifying C++ compiler causes googletest to build in a loop
 # set( CMAKE_CXX_COMPILER /usr/bin/g++ )
@@ -26,21 +29,22 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 # Set compiler flags
 add_compile_options( -Wall -Werror -ggdb )
 
+# Do not build tests for nlohmann_json library
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+
 # Add internal libraries
 add_subdirectory( source/influx )
 add_subdirectory( source/python )
-add_subdirectory( source/cli )
 add_subdirectory( source/third_party/spdlog )
+add_subdirectory( source/third_party/json )
+add_subdirectory( source/cli )
 
 # Add directories with header files
-include_directories( source/influx )
-include_directories( source/python )
 include_directories( source/cli )
-include_directories( source/third_party/spdlog/include )
 
 # Create testing suite
-if ( NOT DEFINED Build_Tests )
-    set( Build_Tests OFF )
+if ( NOT DEFINED AVO_BuildTests )
+    set( AVO_BuildTests OFF )
 endif()
 if ( Build_Tests )
     enable_testing()
@@ -51,10 +55,7 @@ endif()
 add_executable( Avocado source/main.cpp )
 
 # Specify libraries during linking
-target_link_libraries( Avocado PRIVATE Influx )
-target_link_libraries( Avocado PRIVATE PyInterface )
 target_link_libraries( Avocado PRIVATE CLI )
-target_link_libraries( Avocado PRIVATE spdlog::spdlog )
 
 # Copy Python modules to build directory
 file( COPY pymodules DESTINATION ${CMAKE_BINARY_DIR} )

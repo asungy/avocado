@@ -1,4 +1,5 @@
 #include "CLI11/CLI11.hpp"
+#include "nlohmann/json.hpp"
 
 #include "../influx/influx.hpp"
 #include "../python/python.hpp"
@@ -6,8 +7,10 @@
 
 #include <cassert>
 
+using nlohmann::json;
+
 namespace command {
-    int Run(int argc, char * argv[])
+    int Run1(int argc, char * argv[])
     {
         CLI::App root_cmd{ "Avocado CLI" };
 
@@ -48,6 +51,27 @@ namespace command {
             std::cout << root_cmd.help() << std::endl;
         }
 
+        return 0;
+    }
+
+    int Run(int argc, char * argv[])
+    {
+        json j = {
+          {"pi", 3.141},
+          {"happy", true},
+          {"name", "Niels"},
+          {"nothing", nullptr},
+          {"answer", {
+            {"everything", 42}
+          }},
+          {"list", {1, 0, 2}},
+          {"object", {
+            {"currency", "USD"},
+            {"value", 42.99}
+          }}
+        };
+
+        std::cout << j.dump(4) << std::endl;
         return 0;
     }
 }
