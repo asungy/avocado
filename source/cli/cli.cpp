@@ -1,11 +1,14 @@
 #include "CLI11/CLI11.hpp"
 #include "nlohmann/json.hpp"
+#include "spdlog/spdlog.h"
 
 #include "../influx/influx.hpp"
 #include "../python/python.hpp"
 #include "cli.hpp"
 
 #include <cassert>
+#include <cstdlib>
+#include <filesystem>
 
 using nlohmann::json;
 
@@ -72,6 +75,22 @@ namespace command {
         };
 
         std::cout << j.dump(4) << std::endl;
+
+        //---
+
+        std::string config_dir = std::string(getenv("HOME")) + 
+                                 std::string("/.config/avocado/");
+        if (!std::filesystem::exists(config_dir))
+        {
+            std::string message = std::string("Config directory does not exist at ") +
+                                  config_dir + std::string(". Creating directory.");
+            spdlog::info(message);
+
+            std::filesystem::create_directories(config_dir);
+        }
+
+        // TODO: Parse config file
+
         return 0;
     }
 }
