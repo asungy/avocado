@@ -9,6 +9,8 @@
 #include <cassert>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
+#include <iostream>
 
 using nlohmann::json;
 
@@ -59,37 +61,43 @@ namespace command {
 
     int Run(int argc, char * argv[])
     {
-        json j = {
-          {"pi", 3.141},
-          {"happy", true},
-          {"name", "Niels"},
-          {"nothing", nullptr},
-          {"answer", {
-            {"everything", 42}
-          }},
-          {"list", {1, 0, 2}},
-          {"object", {
-            {"currency", "USD"},
-            {"value", 42.99}
-          }}
-        };
-
-        std::cout << j.dump(4) << std::endl;
-
-        //---
-
+        // Create configuration directory, if it does not exist.
         std::string config_dir = std::string(getenv("HOME")) + 
-                                 std::string("/.config/avocado/");
+                                 std::string("/.avocado/");
         if (!std::filesystem::exists(config_dir))
         {
             std::string message = std::string("Config directory does not exist at ") +
                                   config_dir + std::string(". Creating directory.");
             spdlog::info(message);
-
             std::filesystem::create_directories(config_dir);
         }
 
-        // TODO: Parse config file
+        // Create configuration file, if it does not exist.
+        std::string config_file = config_dir + "config.json";
+        if (!std::filesystem::exists(config_file))
+        {
+            std::string message{ "Config file does not exist. Creating config.json" };
+            spdlog::info(message);
+
+            // Prompting user to init config file
+            std::string influx_token{};
+            std::cout << "Enter Influx token: ";
+            std::cin >> influx_token;
+
+            json config_json{};
+            config_json["influx_token"] = influx_token;
+
+            std::ofstream file(config_file);
+            file << config_json.dump(4);
+            file.close();
+        }
+
+        // Parse config file
+        std::ifstream ifs(config_file);
+        json config_json;
+        ifs >> config_json;
+
+        std::cout << "Influx token: " << config_json["influx_token"] << std::endl;
 
         return 0;
     }
