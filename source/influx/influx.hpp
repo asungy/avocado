@@ -11,7 +11,7 @@ namespace influx {
     //      123.5200, 103461100, 1606771800 };
     //   influx::Write("./token.txt", "stock_data_bucket", "data_org", "market_data", data);
     //
-    void Write(std::string filepath, std::string bucket, std::string org,
+    void Write(std::string token, std::string bucket, std::string org,
                std::string measurement, stock::DataPoint data);
 
     // Converts a struct to the Influx line syntax

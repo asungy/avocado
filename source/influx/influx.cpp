@@ -8,19 +8,14 @@
 
 namespace influx {
 
-    // Reads the Influx user token from a specified file and returns the header value used in the 
-    // Authorization header.
-    //
-    // If an error occurs while trying to read the file, a `runtime_error` is thrown.
-    std::string GetTokenFromFile(std::string filepath);
-
-    void Write(std::string filepath, std::string bucket, std::string org,
+    void Write(std::string token, std::string bucket, std::string org,
                std::string measurement, stock::DataPoint data)
     {
         httplib::Client cli("localhost", 8086);
 
+        token = std::string("Token ") + token;
         httplib::Headers headers{
-            { "Authorization", GetTokenFromFile(filepath) },
+            { "Authorization", token },
             { "Accept", "application/json" },
             { "Content-Type", "text/plain; charset=utf-8" }
         };
@@ -59,26 +54,5 @@ namespace influx {
         if (timestamped)
             result += " " + std::to_string(data.timestamp);
         return result;
-    }
-
-    std::string GetTokenFromFile(std::string filepath)
-    {
-        std::ifstream token_file{ filepath };
-        if (token_file.is_open())
-        {
-            std::string token_val;
-            std::getline(token_file, token_val);
-            token_file.close();
-
-            std::string token{"Token "};
-            token.append(token_val);
-            return token;
-        }
-        const char * error_message = 
-            "Error occurred while trying to read token from file. "
-            "Setting token to empty string (\"\").";
-        spdlog::error(error_message);
-
-        return "";
     }
 }

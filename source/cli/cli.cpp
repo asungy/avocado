@@ -15,8 +15,13 @@
 using nlohmann::json;
 
 namespace command {
-    int Run1(int argc, char * argv[])
+    // Forward declarations
+    json GetConfig();
+
+    int Run(int argc, char * argv[])
     {
+        json config = GetConfig();
+
         CLI::App root_cmd{ "Avocado CLI" };
 
         // Adding python subcommands
@@ -26,9 +31,7 @@ namespace command {
         CLI::App * get_fake_data_cmd = python_cmd->add_subcommand("fake-data", "get fake data");
 
         // Add database commands
-        std::string tokenfile;
         CLI::App * database_cmd = root_cmd.add_subcommand("database", "interact with database");
-        database_cmd->add_option("--tokenfile", tokenfile, "File containing Influx user token");
 
         CLI::App * update_cmd = 
             database_cmd->add_subcommand("update", "Adds a point to database");
@@ -43,7 +46,7 @@ namespace command {
             stock::DataPoint data = py_interface::GetFakeData("AAPL");
             py_interface::Finalize();
 
-            influx::Write(tokenfile, "test_bucket", "test", "market_data", data);
+            influx::Write(config["influx_token"], "test_bucket", "test", "market_data", data);
         }
         else if (get_fake_data_cmd->parsed())
         {
@@ -59,7 +62,7 @@ namespace command {
         return 0;
     }
 
-    int Run(int argc, char * argv[])
+    json GetConfig()
     {
         // Create configuration directory, if it does not exist.
         std::string config_dir = std::string(getenv("HOME")) + 
@@ -93,12 +96,11 @@ namespace command {
         }
 
         // Parse config file
-        std::ifstream ifs(config_file);
+        std::ifstream file(config_file);
         json config_json;
-        ifs >> config_json;
+        file >> config_json;
+        file.close();
 
-        std::cout << "Influx token: " << config_json["influx_token"] << std::endl;
-
-        return 0;
+        return config_json;
     }
 }
