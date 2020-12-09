@@ -13,6 +13,9 @@ namespace influx {
     void Write(std::string token, std::string bucket, std::string org,
                std::string measurement, stock::DataPoint data);
 
+    // Create a backup of a local InfluxDB instance
+    void CreateBackup(std::string token, std::string filepath);
+
     // Converts a struct to the Influx line syntax
     //
     // See: https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/
