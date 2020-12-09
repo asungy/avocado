@@ -1,8 +1,4 @@
 # To-do
-- Read from a config file (to locate pymodules and token file)
-
-- Make InfluxDB object to store credentials
-
 - Research importing/exporting data to and from InfluxDB
     - `avocado database export`
 

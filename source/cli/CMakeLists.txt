@@ -7,10 +7,13 @@ add_library(
 
 include_directories( third_party )
 include_directories( ../third_party/spdlog/include )
+include_directories( ../third_party/json/include )
 
 # Adding PyInterface library 
 target_link_libraries( 
     CLI PRIVATE 
     Influx
     PyInterface 
-    spdlog::spdlog )
+    spdlog::spdlog 
+    nlohmann_json::nlohmann_json
+    )
