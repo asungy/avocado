@@ -12,8 +12,8 @@ namespace influx {
                std::string measurement, stock::DataPoint data)
     {
         httplib::Client cli("localhost", 8086);
-
         token = std::string("Token ") + token;
+
         httplib::Headers headers{
             { "Authorization", token },
             { "Accept", "application/json" },

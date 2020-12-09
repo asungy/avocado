@@ -1,7 +1,4 @@
 # To-do
-- ~~Read from a config file ~~
-- Clean up
-
 - Research importing/exporting data to and from InfluxDB
     - `avocado database export`
 

@@ -7,5 +7,5 @@ Please see the [Google C++ Style Guide](https://google.github.io/styleguide/cppg
 # To run test:
 ```bash
 mkdir build and cd build
-cmake -DBuild_Test=ON ..
+cmake -DAVO_BuildTests=ON ..
 ```

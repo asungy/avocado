@@ -15,7 +15,7 @@
 using nlohmann::json;
 
 namespace command {
-    // Forward declarations
+    // Forward declarations for private functions
     json GetConfig();
 
     int Run(int argc, char * argv[])
@@ -39,7 +39,7 @@ namespace command {
         // Parse command
         CLI11_PARSE(root_cmd, argc, argv);
 
-        // Check if command was received
+        // Check if command was received. If not, display help message.
         if (update_cmd->parsed())
         {
             py_interface::Initialize();
