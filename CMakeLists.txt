@@ -27,7 +27,7 @@ set( CMAKE_CXX_STANDARD_REQUIRED True )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 
 # Set compiler flags
-add_compile_options( -Wall -Werror -ggdb )
+add_compile_options( -Wall -Werror -ggdb -O0 )
 
 # Do not build tests for nlohmann_json library
 set(JSON_BuildTests OFF CACHE INTERNAL "")

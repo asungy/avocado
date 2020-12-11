@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace stock {
     // Holds information on a security at a given time
     struct DataPoint

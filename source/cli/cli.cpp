@@ -6,11 +6,18 @@
 #include "../python/python.hpp"
 #include "cli.hpp"
 
+#include <chrono>
+#include <cstdlib>
+#include <iomanip>
+#include <iostream>
+#include <string>
+
 using nlohmann::json;
 
 namespace command {
     // Forward declarations for private functions
     json GetConfig();
+    std::string GMTNow();
 
     inline std::string GetConfigFolder() { 
         return std::string(getenv("HOME")) + std::string("/.avocado/"); 
@@ -22,14 +29,9 @@ namespace command {
 
         CLI::App root_cmd{ "Avocado CLI" };
 
-        // Adding python subcommands
-        CLI::App * python_cmd = 
-            root_cmd.add_subcommand("python", "test command for python interface");
-
-        CLI::App * get_fake_data_cmd = python_cmd->add_subcommand("fake-data", "get fake data");
-
         // Add database commands
-        CLI::App * database_cmd = root_cmd.add_subcommand("database", "interact with database");
+        CLI::App * database_cmd = 
+            root_cmd.add_subcommand("database", "interact with database");
 
         CLI::App * database_update_cmd = 
             database_cmd->add_subcommand("update", "Adds a point to database");
@@ -49,13 +51,16 @@ namespace command {
                 stock::DataPoint data = py_interface::GetFakeData("AAPL");
                 py_interface::Finalize();
 
-                influx::Write(config["influx_token"], "test_bucket", "test", "market_data", data);
+                influx::Write(config["influx_token"], "test_bucket", "test", 
+                              "market_data", data);
             }
             else if (database_backup_cmd->parsed())
             {
-                std::string filename = "influx.db";
-                std::string filepath = GetConfigFolder() + filename;
-                influx::CreateBackup(config["influx_token"], filepath);
+                std::string dirname = std::string("influxdb-") + GMTNow();
+                std::string dirpath = GetConfigFolder() + 
+                                      std::string("backups/") + dirname;
+
+                influx::CreateBackup(config["influx_token"], dirpath);
             }
             else 
             {
@@ -65,17 +70,8 @@ namespace command {
             return 0;
         }
 
-        // Check if command was received. If not, display help message.
-        if (get_fake_data_cmd->parsed())
-        {
-            py_interface::Initialize();
-            py_interface::GetFakeList();
-            py_interface::Finalize();
-        }
-
-        assert((false) && "Faulty logic. No commands parsed.");
-
-        return -1;
+        std::cout << root_cmd.help() << std::endl;
+        return 0;
     }
 
     json GetConfig()
@@ -118,5 +114,20 @@ namespace command {
         file.close();
 
         return config_json;
+    }
+
+    std::string GMTNow()
+    {
+        auto now = std::chrono::system_clock::now();
+        time_t t_c = std::chrono::system_clock::to_time_t(now);
+
+        char buf[128];
+        if (std::strftime(buf, sizeof(buf), "%FT%TZ", std::gmtime(&t_c))) {
+            return std::string(buf);
+        } 
+        else {
+            throw std::runtime_error("Error occurred when trying to convert current "
+                                     "system clock time to string");
+        }
     }
 }

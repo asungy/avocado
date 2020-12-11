@@ -3,6 +3,8 @@
 
 #include "influx.hpp"
 
+#include <iostream>
+
 namespace influx {
 
     void Write(std::string token, std::string bucket, std::string org,
