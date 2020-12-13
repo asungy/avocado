@@ -7,6 +7,9 @@
 
 namespace influx {
 
+    // Run a command and pipe the output to a string return value
+    std::string ProcessAndPipe(std::string command);
+
     void Write(std::string token, std::string bucket, std::string org,
                std::string measurement, stock::DataPoint data)
     {
@@ -39,34 +42,19 @@ namespace influx {
         }
     }
 
-    void CreateBackup(std::string token, std::string filepath)
+    void CreateBackup(std::string token, std::string dirpath)
     {
         std::string command{ "influx backup " };
-        command += filepath;
+        command += dirpath;
         command += std::string(" -t ") + token;
 
-        FILE * proc_stream = popen(command.c_str(), "r");
-        if (proc_stream == nullptr) 
-        {
-            std::string message = std::string("Failed to create pipe or process. ") +
-                                  std::string("Command: ") + command;
-            throw std::runtime_error(message);
-        }
+        std::cout << ProcessAndPipe(command) << std::endl;
+    }
 
-        std::array<char, 128> buffer{};
-        std::string result{};
-        while (!feof(proc_stream))
-        {
-            if (fgets(buffer.data(), 128, proc_stream) != nullptr)
-                result += buffer.data();
-        }
 
-        int result_code = pclose(proc_stream);
-        if (result_code != EXIT_SUCCESS) {
-            spdlog::error("Error occurred when closing pipe and/or process.");
-        }
+    void RestoreFromBackup(std::string token, std::string dirpath)
+    {
 
-        std::cout << result << std::endl;
     }
 
     std::string ToLineProtocal(std::string measurement, stock::DataPoint data, 
@@ -83,6 +71,34 @@ namespace influx {
         result += ",volume=" + std::to_string(data.volume);
         if (timestamped)
             result += " " + std::to_string(data.timestamp);
+        return result;
+    }
+
+
+    std::string ProcessAndPipe(std::string command)
+    {
+        FILE * proc_stream = popen(command.c_str(), "r");
+        if (proc_stream == nullptr) 
+        {
+            std::string message = std::string("Failed to create pipe or process. ") +
+                                  std::string("Command: ") + command;
+            throw std::runtime_error(message);
+        }
+
+        const unsigned int output_size = 1024;
+        std::array<char, output_size> buffer{};
+        std::string result{};
+        while (!feof(proc_stream))
+        {
+            if (fgets(buffer.data(), output_size, proc_stream) != nullptr)
+                result += buffer.data();
+        }
+
+        int result_code = pclose(proc_stream);
+        if (result_code != EXIT_SUCCESS) {
+            spdlog::error("Error occurred when closing pipe and/or process.");
+        }
+
         return result;
     }
 }

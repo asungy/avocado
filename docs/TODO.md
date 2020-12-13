@@ -1,9 +1,6 @@
 # To-do
 - ~~Implemented backup~~
-
-- Add timestamp to backup directory
-
-- Tar backup directory and untar for recovery
+- ~~Add timestamp to backup directory~~
 
 - Implement restore
     - influx restore -t rzEh-if7nk-Jo0QINlR7xktFqEsNOITexMPF3U2P27KDDA5U8xe1W7o0WXRkpDlX1x6ELW0H6z8EkLlkxscv3g== --full influx.db/

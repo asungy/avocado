@@ -14,7 +14,10 @@ namespace influx {
                std::string measurement, stock::DataPoint data);
 
     // Create a backup of a local InfluxDB instance
-    void CreateBackup(std::string token, std::string filepath);
+    void CreateBackup(std::string token, std::string dirpath);
+
+    // Restore InfluxDB from backup directory
+    void RestoreFromBackup(std::string token, std::string dirpath);
 
     // Converts a struct to the Influx line syntax
     //
