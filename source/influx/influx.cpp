@@ -44,17 +44,20 @@ namespace influx {
 
     void CreateBackup(std::string token, std::string dirpath)
     {
-        std::string command{ "influx backup " };
+        std::string command{"influx backup "};
         command += dirpath;
         command += std::string(" -t ") + token;
 
         std::cout << ProcessAndPipe(command) << std::endl;
     }
 
-
     void RestoreFromBackup(std::string token, std::string dirpath)
     {
-
+        std::string command{"influx restore -t "};
+        command += token;
+        command += std::string(" --full ") + dirpath;
+        
+        std::cout << ProcessAndPipe(command) << std::endl;
     }
 
     std::string ToLineProtocal(std::string measurement, stock::DataPoint data, 
@@ -73,7 +76,6 @@ namespace influx {
             result += " " + std::to_string(data.timestamp);
         return result;
     }
-
 
     std::string ProcessAndPipe(std::string command)
     {

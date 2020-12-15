@@ -1,9 +1,16 @@
 # To-do
 - ~~Implemented backup~~
 - ~~Add timestamp to backup directory~~
+- ~~Implement restore~~
 
-- Implement restore
-    - influx restore -t rzEh-if7nk-Jo0QINlR7xktFqEsNOITexMPF3U2P27KDDA5U8xe1W7o0WXRkpDlX1x6ELW0H6z8EkLlkxscv3g== --full influx.db/
+- Use timestamp in backup directories instead of name
+  - Allow for custom backup directory names
+
+- Set compiler options for debug vs optimized binary
+    - More research on proper CMake set up
+    - How make faster builds
+
+- Set up integration tests in bash/docker
 
 - Harvest stock securities from stock exchange
     - https://www.nyse.com/listings_directory/stock
@@ -11,5 +18,3 @@
     - Time series data
     - Fundamental data
 
-- Set compiler options for debug vs optimized binary
-    - More research on proper CMake set up
