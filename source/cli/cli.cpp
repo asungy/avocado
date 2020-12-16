@@ -74,13 +74,13 @@ namespace command {
             {
                 std::string backup_path = GetBackupFolder() + backup_dir;
                 influx::CreateBackup(config["influx_token"], backup_path);
-                spdlog::info("Created backup at {}", backup_path);
+                spdlog::info("Created database backup at {}", backup_path);
             }
             else if (database_restore_cmd->parsed())
             {
-                std::string latest_dir = GetBackupFolder() + GetLatestBackup();
-                spdlog::info("Restoring from {}", latest_dir);
+                std::string latest_dir = GetLatestBackup();
                 influx::RestoreFromBackup(config["influx_token"], latest_dir);
+                spdlog::info("Restoring database from {}", latest_dir);
             }
             else 
             {
@@ -155,8 +155,8 @@ namespace command {
     std::string GetLatestBackup()
     {
         auto iter = std::filesystem::directory_iterator(GetBackupFolder());
-        std::string first = iter->path().filename();
-
+        std::string first = iter->path().c_str();
+        
         std::tuple<std::string, time_t> latest{
             first,
             GetBackupTimeStamp(first)
@@ -164,7 +164,7 @@ namespace command {
 
         for (const auto & entry : std::next(iter))
         {
-            std::string dir = entry.path().filename();
+            std::string dir = entry.path().c_str();
             time_t time = GetBackupTimeStamp(dir);
             time_t curr = std::get<1>(latest);
             if (curr < time)
@@ -172,25 +172,36 @@ namespace command {
                 latest = std::make_tuple(dir, time);
             }
         }
-        
+
         return std::get<0>(latest);
     }
 
     time_t GetBackupTimeStamp(std::string dir)
     {
-        // Capture example: influxdb-2020-12-16T123456Z
-        std::regex expr{"influxdb-([0-9]+)-([0-9]+)-([0-9]+)T([0-9]{2})([0-9]{2})([0-9]{2})Z"};
-        std::cmatch matches;
-        std::regex_match(dir.c_str(), matches, expr);
+        // Captures datetime info like in '20201216T060258Z.manifest'
+        std::regex expr{".*([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2})Z.+"};
+        auto iter = std::filesystem::directory_iterator(dir);
+        for (const auto & entry : iter)
+        {
+            std::cmatch matches{};
+            // Converting filename to std::string cleans string for
+            // regex_match somehow. Otherwise, it matches with
+            // some artifacts.
+            std::string dirname{ entry.path().filename().c_str() };
+            std::regex_match(dirname.c_str(), matches, expr);
+            if (matches.size() == 7) // 6 captures plus whole
+            {
+                struct tm backup_time = {0};
+                backup_time.tm_year = std::stoi(std::string(matches[1]));
+                backup_time.tm_mon  = std::stoi(std::string(matches[2]));
+                backup_time.tm_mday = std::stoi(std::string(matches[3]));
+                backup_time.tm_hour = std::stoi(std::string(matches[4]));
+                backup_time.tm_min  = std::stoi(std::string(matches[5]));
+                backup_time.tm_sec  = std::stoi(std::string(matches[6]));
+                return mktime(&backup_time);
+            }
+        }
 
-        struct tm backup_time = {0};
-        backup_time.tm_year = std::stoi(std::string(matches[1]));
-        backup_time.tm_mon  = std::stoi(std::string(matches[2]));
-        backup_time.tm_mday = std::stoi(std::string(matches[3]));
-        backup_time.tm_hour = std::stoi(std::string(matches[4]));
-        backup_time.tm_min  = std::stoi(std::string(matches[5]));
-        backup_time.tm_sec  = std::stoi(std::string(matches[6]));
-
-        return mktime(&backup_time);
+        throw std::runtime_error("Could not extract timestamp from backup directory");
     }
 }
