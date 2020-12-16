@@ -49,6 +49,9 @@ namespace command {
         CLI::App * database_backup_cmd =
             database_cmd->add_subcommand("backup", "Create backup of database");
 
+        std::string backup_dir = std::string("influxdb-") + GMTNow();
+        database_backup_cmd->add_option("backup_dir", backup_dir, "Name of backup");
+
         CLI::App * database_restore_cmd =
             database_cmd->add_subcommand("restore", "Restore database from backup");
 
@@ -69,11 +72,9 @@ namespace command {
             }
             else if (database_backup_cmd->parsed())
             {
-                std::string dirname = std::string("influxdb-") + GMTNow();
-                std::string dirpath = GetConfigFolder() + 
-                                      std::string("backups/") + dirname;
-
-                influx::CreateBackup(config["influx_token"], dirpath);
+                std::string backup_path = GetBackupFolder() + backup_dir;
+                influx::CreateBackup(config["influx_token"], backup_path);
+                spdlog::info("Created backup at {}", backup_path);
             }
             else if (database_restore_cmd->parsed())
             {
