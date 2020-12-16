@@ -82,7 +82,14 @@ namespace command {
             }
             else if (database_restore_cmd->parsed())
             {
-                restore_dir = restore_dir.empty() ? GetLatestBackup() : restore_dir;
+                try {
+                    restore_dir = restore_dir.empty() ? GetLatestBackup() : restore_dir;
+                }
+                catch(const std::runtime_error & err)
+                {
+                    std::cout << err.what() << std::endl;
+                    exit(EXIT_SUCCESS);
+                }
                 influx::RestoreFromBackup(config["influx_token"], restore_dir);
                 spdlog::info("Restoring database from {}", restore_dir);
             }
@@ -158,9 +165,16 @@ namespace command {
 
     std::string GetLatestBackup()
     {
-        auto iter = std::filesystem::directory_iterator(GetBackupFolder());
-        std::string first = iter->path().c_str();
-        
+        std::filesystem::path backup_folder{GetBackupFolder()};
+        if (std::filesystem::is_empty(backup_folder))
+        {
+            throw std::runtime_error(
+                std::string("No backups found in ") + GetBackupFolder()
+            );
+        }
+
+        auto iter = std::filesystem::directory_iterator(backup_folder);
+        std::string first = iter->path().c_str();     
         std::tuple<std::string, time_t> latest{
             first,
             GetBackupTimeStamp(first)
