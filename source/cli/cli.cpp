@@ -55,6 +55,10 @@ namespace command {
         CLI::App * database_restore_cmd =
             database_cmd->add_subcommand("restore", "Restore database from backup");
 
+        std::string restore_dir{};
+        database_restore_cmd->add_option("restore_dir", restore_dir, 
+                                        "Path to root of backup directory");
+
         // Parse command
         CLI11_PARSE(root_cmd, argc, argv);
 
@@ -78,9 +82,9 @@ namespace command {
             }
             else if (database_restore_cmd->parsed())
             {
-                std::string latest_dir = GetLatestBackup();
-                influx::RestoreFromBackup(config["influx_token"], latest_dir);
-                spdlog::info("Restoring database from {}", latest_dir);
+                restore_dir = restore_dir.empty() ? GetLatestBackup() : restore_dir;
+                influx::RestoreFromBackup(config["influx_token"], restore_dir);
+                spdlog::info("Restoring database from {}", restore_dir);
             }
             else 
             {
