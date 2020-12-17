@@ -61,7 +61,7 @@ namespace influx {
     }
 
     std::string ToLineProtocal(std::string measurement, stock::DataPoint data, 
-                            bool timestamped)
+                               bool timestamped)
     {
         std::string result{measurement};
         // Appending tag
@@ -98,7 +98,10 @@ namespace influx {
 
         int result_code = pclose(proc_stream);
         if (result_code != EXIT_SUCCESS) {
-            spdlog::error("Error occurred when closing pipe and/or process.");
+            spdlog::error(
+                "The following command produced an error: {}", 
+                command
+            );
         }
 
         return result;

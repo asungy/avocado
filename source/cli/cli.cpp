@@ -19,11 +19,21 @@
 using nlohmann::json;
 
 namespace command {
-    // Forward declarations for private functions
+    ///////////////////////////////////////////////////////////////////////////
+    //                          Private Functions
+    ///////////////////////////////////////////////////////////////////////////
+
+    // Parse configuration file into json object
     json GetConfig();
+    // Return a string representation of the current UTC/GMT time
     std::string GMTNow();
+    // Get latest database backup directory
     std::string GetLatestBackup();
+    // Return Linux epoch value from database backup directory timestamp
     time_t GetBackupTimeStamp(std::string dir);
+
+    ///////////////////////////////////////////////////////////////////////////
+    // End of private functions
 
     inline std::string GetConfigFolder() { 
         return std::string(getenv("HOME")) + std::string("/.avocado/"); 
@@ -57,7 +67,7 @@ namespace command {
 
         std::string restore_dir{};
         database_restore_cmd->add_option("restore_dir", restore_dir, 
-                                        "Path to root of backup directory");
+                                         "Path to root of backup directory");
 
         // Parse command
         CLI11_PARSE(root_cmd, argc, argv);
@@ -65,6 +75,7 @@ namespace command {
         // Check `avocado database` subcommand call
         if (database_cmd->parsed())
         {
+            // Check `avocado database update`
             if (database_update_cmd->parsed())
             {
                 py_interface::Initialize();
@@ -74,12 +85,14 @@ namespace command {
                 influx::Write(config["influx_token"], "test_bucket", "test", 
                               "market_data", data);
             }
+            // Check `avocado database backup [dir]`
             else if (database_backup_cmd->parsed())
             {
                 std::string backup_path = GetBackupFolder() + backup_dir;
                 influx::CreateBackup(config["influx_token"], backup_path);
                 spdlog::info("Created database backup at {}", backup_path);
             }
+            // Check `avocado database restore [path]`
             else if (database_restore_cmd->parsed())
             {
                 try {
@@ -109,7 +122,6 @@ namespace command {
     {
         // Create configuration directory, if it does not exist.
         std::string config_dir = GetConfigFolder();
-                                 
         if (!std::filesystem::exists(config_dir))
         {
             std::string message = std::string("Config directory does not exist at ") +
@@ -117,7 +129,6 @@ namespace command {
             spdlog::info(message);
             std::filesystem::create_directories(config_dir);
         }
-
         // Create configuration file, if it does not exist.
         std::string config_file = config_dir + "config.json";
         if (!std::filesystem::exists(config_file))
@@ -137,7 +148,6 @@ namespace command {
             file << config_json.dump(4);
             file.close();
         }
-
         // Parse config file
         std::ifstream file(config_file);
         json config_json;
@@ -165,6 +175,7 @@ namespace command {
 
     std::string GetLatestBackup()
     {
+        // Error checking
         std::filesystem::path backup_folder{GetBackupFolder()};
         if (std::filesystem::is_empty(backup_folder))
         {
@@ -172,14 +183,14 @@ namespace command {
                 std::string("No backups found in ") + GetBackupFolder()
             );
         }
-
+        // Assign latest to first entry
         auto iter = std::filesystem::directory_iterator(backup_folder);
         std::string first = iter->path().c_str();     
         std::tuple<std::string, time_t> latest{
             first,
             GetBackupTimeStamp(first)
         };
-
+        // Find backup with latest timestamp
         for (const auto & entry : std::next(iter))
         {
             std::string dir = entry.path().c_str();
