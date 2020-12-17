@@ -1,6 +1,9 @@
 # To-do
-- Research importing/exporting data to and from InfluxDB
-    - `avocado database export`
+- Set compiler options for debug vs optimized binary
+    - More research on proper CMake set up
+    - How make faster builds
+
+- Set up integration tests in bash/docker
 
 - Harvest stock securities from stock exchange
     - https://www.nyse.com/listings_directory/stock
@@ -8,5 +11,4 @@
     - Time series data
     - Fundamental data
 
-- Set compiler options for debug vs optimized binary
-    - More research on proper CMake set up
+- Develop CadoCoin/AvoCoin

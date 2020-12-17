@@ -1,10 +1,9 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
-#include <iostream>
-
 #include "python.hpp"
 
+#include <iostream>
 
 namespace py_interface {
     void Run()
