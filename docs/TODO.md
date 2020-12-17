@@ -1,7 +1,5 @@
 # To-do
-- Set compiler options for debug vs optimized binary
-    - More research on proper CMake set up
-    - How make faster builds
+- Develop CadoCoin/AvoCoin
 
 - Set up integration tests in bash/docker
 
@@ -10,5 +8,3 @@
 - Use stock securities list to harvest market data from AlphaVantage
     - Time series data
     - Fundamental data
-
-- Develop CadoCoin/AvoCoin
