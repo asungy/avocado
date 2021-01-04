@@ -14,6 +14,7 @@ target_link_libraries(
     CLI PRIVATE 
     Influx
     PyInterface 
+    GUI
     spdlog::spdlog 
     nlohmann_json::nlohmann_json
     )

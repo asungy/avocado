@@ -35,6 +35,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-Wall -Werror -O3")
 set(JSON_BuildTests OFF CACHE INTERNAL "")
 
 # Add internal libraries
+add_subdirectory( source/gui )
 add_subdirectory( source/influx )
 add_subdirectory( source/python )
 add_subdirectory( source/third_party/spdlog )
