@@ -7,6 +7,7 @@ set( GLFW_BUILD_DOCS "OFF" )
 add_library(
     GUI STATIC
     Application.cpp
+    Events/KeyboardEvent.cpp
     gui.cpp
     )
 

@@ -4,7 +4,7 @@
 namespace gui {
     void Run() 
     {
-        Application * app = new Application();
+        Application * app = Application::GetInstance();
         app->Run();
     }
 }

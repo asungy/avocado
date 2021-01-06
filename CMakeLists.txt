@@ -27,7 +27,6 @@ set( CMAKE_CXX_STANDARD_REQUIRED True )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 
 # Set compiler flags
-# add_compile_options( -Wall -Werror -ggdb -O0 )
 set(CMAKE_CXX_FLAGS_DEBUG   "-Wall -Werror -ggdb -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Wall -Werror -O3")
 

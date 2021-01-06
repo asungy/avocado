@@ -121,6 +121,7 @@ namespace command {
             return 0;
         }
 
+        // Check `avocado gui`
         if (gui_cmd->parsed())
         {
             gui::Run();
