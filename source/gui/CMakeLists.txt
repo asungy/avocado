@@ -8,6 +8,7 @@ add_library(
     GUI STATIC
     Application.cpp
     Events/KeyboardEvent.cpp
+    Events/EventQueue.cpp
     gui.cpp
     )
 

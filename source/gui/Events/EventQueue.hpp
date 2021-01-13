@@ -1,6 +1,7 @@
 #include "Event.hpp"
 
 #include <queue>
+#include <list>
 
 namespace gui {
     class EventQueue
@@ -9,10 +10,14 @@ namespace gui {
         EventQueue();
         ~EventQueue();
 
-        void PushEvent(Event event);
-        Event Consume();
+        void PushEvent(Event * event);
+
+        void ConsumeAll();
 
     private:
-        std::queue<Event> * event_queue;
-    }
+        void Consume();
+
+    private:
+        std::queue<Event *> * queue;
+    };
 }

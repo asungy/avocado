@@ -12,7 +12,7 @@ namespace gui {
 
     enum EventCategory
     {
-        None = 0,
+        EventCategoryNone = 0,
         EventCategoryKeyboard = 1 << 0
     };
 

@@ -19,6 +19,34 @@ namespace gui {
 
     Application::Application()
     {
+        this->event_queue = new EventQueue();
+        InitGlfwWindow();
+    }
+
+    Application::~Application()
+    {
+        delete this->event_queue;
+        glfwTerminate();
+    }
+
+    void Application::Run()
+    {
+        std::cout << "Hello GUI!" << std::endl;
+
+        while (!glfwWindowShouldClose(this->window))
+        {
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            glfwSwapBuffers(this->window);
+
+            glfwPollEvents();
+
+            this->event_queue->ConsumeAll();
+        }
+    }
+
+    void Application::InitGlfwWindow()
+    {
         if (!glfwInit())
             return;
 
@@ -36,31 +64,27 @@ namespace gui {
             KeyboardEventArgs args = { window, key, scancode, action, mods };
 
             auto f = [](GLFWwindow * window, int key, int scancode, int action, int mods){
-                std::cout << "From the callback!" << std::endl;
+                std::cout << "Key: " << key << ", "
+                          << "Scancode: " << scancode << ", "
+                          << "Action: " << action << std::endl;
             };
 
-            KeyboardEvent event{EventType::None, EventCategoryKeyboard, args, f };
+            EventType event_type;
+            switch (action) 
+            {
+            case GLFW_PRESS:
+                event_type = EventType::KeyPressed;
+                break;
+            case GLFW_RELEASE:
+                event_type = EventType::KeyReleased;
+                break;
+            default:
+                event_type = EventType::None;
+            }
 
-            event.Process();
+            KeyboardEvent * event = new KeyboardEvent(event_type, EventCategoryKeyboard, args, f);
+
+            Application::GetInstance()->event_queue->PushEvent(event);
         });
-    }
-
-    Application::~Application()
-    {
-        glfwTerminate();
-    }
-
-    void Application::Run()
-    {
-        std::cout << "Hello GUI!" << std::endl;
-
-        while (!glfwWindowShouldClose(this->window))
-        {
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            glfwSwapBuffers(this->window);
-
-            glfwPollEvents();
-        }
     }
 }
