@@ -14,3 +14,15 @@ cmake -DAVO_BuildTests=ON -DCMAKE_BUILD_TYPE=Debug -GNinja ..
 | Ninja        | Release | 23.63                |
 | Make -j12    | Debug   | 26.23                |
 | Make -j12    | Release | 37.04                |
+
+# Layer architecture
+|-----------|
+| GUI | CLI |
+|-----------|
+| Command   |
+|-----------|
+| Engine    |
+|-----------|
+| Database  |
+|-----------|
+
