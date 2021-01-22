@@ -4,6 +4,7 @@
 
 #include "../influx/influx.hpp"
 #include "../python/python.hpp"
+#include "../gui/gui.hpp"
 #include "cli.hpp"
 
 #include <chrono>
@@ -19,9 +20,9 @@
 using nlohmann::json;
 
 namespace command {
-    ///////////////////////////////////////////////////////////////////////////
-    //                          Private Functions
-    ///////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    //                           Private Functions
+    ////////////////////////////////////////////////////////////////////////////
 
     // Parse configuration file into json object
     json GetConfig();
@@ -49,6 +50,7 @@ namespace command {
 
         CLI::App root_cmd{ "Avocado CLI" };
 
+        ////////////////////////////////////////////////////////////////////////
         // Add database commands
         CLI::App * database_cmd = 
             root_cmd.add_subcommand("database", "interact with database");
@@ -68,6 +70,11 @@ namespace command {
         std::string restore_dir{};
         database_restore_cmd->add_option("restore_dir", restore_dir, 
                                          "Path to root of backup directory");
+
+        ////////////////////////////////////////////////////////////////////////
+        // Add gui command
+        CLI::App * gui_cmd =
+            root_cmd.add_subcommand("gui", "Open GUI display");
 
         // Parse command
         CLI11_PARSE(root_cmd, argc, argv);
@@ -111,6 +118,13 @@ namespace command {
                 std::cout << database_cmd->help() << std::endl;
             }
 
+            return 0;
+        }
+
+        // Check `avocado gui`
+        if (gui_cmd->parsed())
+        {
+            gui::Run();
             return 0;
         }
 

@@ -27,7 +27,6 @@ set( CMAKE_CXX_STANDARD_REQUIRED True )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 
 # Set compiler flags
-# add_compile_options( -Wall -Werror -ggdb -O0 )
 set(CMAKE_CXX_FLAGS_DEBUG   "-Wall -Werror -ggdb -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Wall -Werror -O3")
 
@@ -35,6 +34,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-Wall -Werror -O3")
 set(JSON_BuildTests OFF CACHE INTERNAL "")
 
 # Add internal libraries
+add_subdirectory( source/gui )
 add_subdirectory( source/influx )
 add_subdirectory( source/python )
 add_subdirectory( source/third_party/spdlog )

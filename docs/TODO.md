@@ -1,5 +1,9 @@
 # To-do
-- Develop CadoCoin/AvoCoin
+- Implement Application class (outside of gui) to store layers and application events
+- Implement Layer and LayerStack 
+- Set up ImGui and create ImGUI layer
+- Create CLI layer 
+- Create separate builds for GUI and CLI
 
 - Set up integration tests in bash/docker
 

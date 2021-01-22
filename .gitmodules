@@ -10,3 +10,9 @@
 [submodule "source/third_party/json"]
 	path = source/third_party/json
 	url = https://github.com/nlohmann/json.git
+[submodule "source/gui/third_party/glew"]
+	path = source/gui/third_party/glew
+	url = https://github.com/nigels-com/glew.git
+[submodule "source/gui/third_party/glfw"]
+	path = source/gui/third_party/glfw
+	url = https://github.com/glfw/glfw.git

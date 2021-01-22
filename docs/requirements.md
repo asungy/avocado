@@ -10,6 +10,10 @@
 - python3.8 (or greater)
 - [libpython](https://pkgs.org/download/libpython3.8-dev) (version 3.8 or greater)
 - [InfluxDB](https://www.influxdata.com/products/influxdb/) (v2.0.2 or greater)
+- GLFW: depends on X11
+  - `sudo apt install xorg-dev` (try this one first)
+  - `sudo apt install libx11-dev libxrandr-dev libxinerama-dev \
+     libxcursor-dev libxi-dev libxext-dev libglfw3-dev`
 
 # Optional
 - [Ninja](https://ninja-build.org/)
