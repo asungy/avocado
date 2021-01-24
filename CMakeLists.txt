@@ -40,9 +40,11 @@ add_subdirectory( source/python )
 add_subdirectory( source/third_party/spdlog )
 add_subdirectory( source/third_party/json )
 add_subdirectory( source/cli )
+add_subdirectory( source/repl )
 
 # Add directories with header files
-include_directories( source/cli )
+# include_directories( source/cli )
+include_directories( source/repl )
 
 # Create testing suite
 if ( NOT DEFINED AVO_BuildTests )
@@ -57,7 +59,8 @@ endif()
 add_executable( Avocado source/main.cpp )
 
 # Specify libraries during linking
-target_link_libraries( Avocado PRIVATE CLI )
+# target_link_libraries( Avocado PRIVATE CLI )
+target_link_libraries( Avocado PRIVATE REPL )
 
 # Copy Python modules to build directory
 file( COPY pymodules DESTINATION ${CMAKE_BINARY_DIR} )

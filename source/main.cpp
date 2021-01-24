@@ -1,6 +1,7 @@
-#include "cli.hpp"
+#include "repl.hpp"
 
 int main( int argc, char * argv[] )
 {
-    return command::Run(argc, argv);
+    auto repl = new repl::Repl();
+    repl->Run();
 }

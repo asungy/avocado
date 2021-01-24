@@ -14,6 +14,7 @@
   - `sudo apt install xorg-dev` (try this one first)
   - `sudo apt install libx11-dev libxrandr-dev libxinerama-dev \
      libxcursor-dev libxi-dev libxext-dev libglfw3-dev`
+- ncurses: `sudo apt install libncursesw5-dev`
 
 # Optional
 - [Ninja](https://ninja-build.org/)
